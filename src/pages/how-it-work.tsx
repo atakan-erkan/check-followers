@@ -56,23 +56,31 @@ const HowItWork = () => {
         },
         {
             id: 9,
-            title: "Bilgilerini İndirin",
-            description: "Talep edilen bilgiler belli bir süre sonra bilgileri indir bölümüne gönderilir. Buradan indirin.",
+            title: "Cihaza Aktarın",
+            description: "Cihaza aktarmadan önce istediğiniz tarih aralığını seçebilirsiniz.",
             image: "/images/step-nine.png"
         },
         {
             id: 10,
+            title: "Bilgilerini İndirin",
+            description: "Talep edilen bilgiler belli bir süre sonra bilgileri indir bölümüne gönderilir. Buradan indirin.",
+            image: "/images/step-ten.png"
+        },
+        {
+            id: 11,
             title: "Son",
             description: "Dosyayı sitemize yükleyin ve sonuçları görüntüleyin.",
-            image: "/images/step-ten.png"
+            image: "/images/step-eleven.png"
         }
     ]
 
-    // Adımları 2'li gruplar halinde düzenle
+    // Adımları 2'li gruplar halinde düzenle, son adımı tek başına bırak
     const groupedSteps = [];
-    for (let i = 0; i < steps.length; i += 2) {
+    for (let i = 0; i < steps.length - 1; i += 2) {
         groupedSteps.push(steps.slice(i, i + 2));
     }
+    // Son adımı tek başına ekle
+    groupedSteps.push([steps[steps.length - 1]]);
 
     return (
         <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-yellow-50'}`}>
@@ -83,7 +91,7 @@ const HowItWork = () => {
 
                 <div className="space-y-8">
                     {groupedSteps.map((group, groupIndex) => (
-                        <div key={groupIndex} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div key={groupIndex} className={`grid ${group.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-6`}>
                             {group.map((step) => (
                                 <div key={step.id} className={`flex flex-col p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
                                     <div className="flex items-center gap-4 mb-4">
