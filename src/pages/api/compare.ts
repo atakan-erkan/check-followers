@@ -1,13 +1,13 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import { IncomingForm, Fields, Files } from "formidable";
+import { JSDOM } from "jsdom";
+import AdmZip from "adm-zip";
+
 export const config = {
     api: {
         bodyParser: false,
     },
 };
-
-import { NextApiRequest, NextApiResponse } from 'next';
-import { IncomingForm, Fields, Files } from "formidable";
-import fs from "fs";
-import { JSDOM } from "jsdom";
 
 function extractUsernamesFromHTML(html: string): string[] {
     const dom = new JSDOM(html);
@@ -33,15 +33,28 @@ export default async function handler(
         if (err) return res.status(500).json({ error: "Dosya çözümleme hatası" });
 
         try {
-            const followingFile = files.following?.[0];
-            const followersFile = files.followers?.[0];
-
-            if (!followingFile || !followersFile) {
-                return res.status(400).json({ error: "Gerekli dosyalar eksik" });
+            const zipFile = files.zip?.[0];
+            if (!zipFile) {
+                return res.status(400).json({ error: "Zip dosyası yüklenmedi" });
             }
 
-            const followingHTML = fs.readFileSync(followingFile.filepath, "utf-8");
-            const followersHTML = fs.readFileSync(followersFile.filepath, "utf-8");
+            const zip = new AdmZip(zipFile.filepath);
+            const zipEntries = zip.getEntries();
+
+            let followingHTML = "";
+            let followersHTML = "";
+
+            for (const entry of zipEntries) {
+                if (entry.entryName.includes("connections/followers_and_following/following.html")) {
+                    followingHTML = zip.readAsText(entry);
+                } else if (entry.entryName.includes("connections/followers_and_following/followers_1.html")) {
+                    followersHTML = zip.readAsText(entry);
+                }
+            }
+
+            if (!followingHTML || !followersHTML) {
+                return res.status(400).json({ error: "Followers veya following dosyaları bulunamadı" });
+            }
 
             const following = extractUsernamesFromHTML(followingHTML);
             const followers = extractUsernamesFromHTML(followersHTML);

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "adm-zip": "^0.5.16",
     "emailjs-com": "^3.2.0",
     "formidable": "^3.5.4",
     "jsdom": "^26.1.0",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/adm-zip": "^0.5.7",
     "@types/formidable": "^3.4.5",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^20",

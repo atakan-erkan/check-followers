@@ -5,8 +5,7 @@ import Modal from "../components/Modal";
 
 export default function Home() {
   const { theme, language, translations } = useApp();
-  const [followersFile, setFollowersFile] = useState<File | null>(null);
-  const [followingFile, setFollowingFile] = useState<File | null>(null);
+  const [zipFile, setZipFile] = useState<File | null>(null);
   const [notFollowingBack, setNotFollowingBack] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,16 +32,15 @@ export default function Home() {
   );
 
   const handleSubmit = async () => {
-    if (!followersFile || !followingFile) {
-      setModalMessage("Lütfen her iki dosyayı da yükleyin.");
+    if (!zipFile) {
+      setModalMessage("Lütfen Instagram'dan indirdiğiniz zip dosyasını yükleyin.");
       setShowModal(true);
       return;
     }
     setLoading(true);
 
     const formData = new FormData();
-    formData.append("followers", followersFile);
-    formData.append("following", followingFile);
+    formData.append("zip", zipFile);
 
     try {
       const res = await fetch("/api/compare", {
@@ -91,29 +89,27 @@ export default function Home() {
             {translations.instagramFollowerCheck[language]}
           </h2>
 
-          {/* Dosya Yükleme Alanları */}
-          {[{ label: "Takipçiler Dosyası", setter: setFollowersFile, file: followersFile },
-          { label: "Takip Edilenler Dosyası", setter: setFollowingFile, file: followingFile }].map(({ label, setter, file }, i) => (
-            <div key={i}>
-              <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'
-                } mb-2`}>{label}</label>
-              <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-yellow-400 bg-yellow-100 rounded-lg cursor-pointer transition hover:bg-yellow-200 text-gray-700 relative">
-                <svg className="w-8 h-8 mb-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                </svg>
-                <p className="text-sm">
-                  {file ? file.name : "Dosya seçin veya sürükleyin"}
-                </p>
-                <input
-                  type="file"
-                  accept=".html"
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  onChange={e => e.target.files && setter(e.target.files[0])}
-                />
-              </label>
-            </div>
-          ))}
+          {/* Zip Dosyası Yükleme Alanı */}
+          <div>
+            <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-800'} mb-2`}>
+              Instagram Veri Dosyası
+            </label>
+            <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-yellow-400 bg-yellow-100 rounded-lg cursor-pointer transition hover:bg-yellow-200 text-gray-700 relative">
+              <svg className="w-8 h-8 mb-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              <p className="text-sm">
+                {zipFile ? zipFile.name : "Instagram'dan indirdiğiniz zip dosyasını seçin veya sürükleyin"}
+              </p>
+              <input
+                type="file"
+                accept=".zip"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                onChange={e => e.target.files && setZipFile(e.target.files[0])}
+              />
+            </label>
+          </div>
 
           <button
             onClick={handleSubmit}
