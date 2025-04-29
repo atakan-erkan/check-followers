@@ -62,15 +62,9 @@ const HowItWork = () => {
         },
         {
             id: 10,
-            title: "Zip dosyasını açın",
-            description: "Zip dosyasını açın ve bilgilerinizi indirin.",
-            image: "/images/step-ten.png"
-        },
-        {
-            id: 11,
             title: "Son",
-            description: "Followers ve Following dosyalarını sitemize yükleyin ve sonuçları görüntüleyin.",
-            image: "/images/step-eleven.png"
+            description: "Dosyayı sitemize yükleyin ve sonuçları görüntüleyin.",
+            image: "/images/step-ten.png"
         }
     ]
 
