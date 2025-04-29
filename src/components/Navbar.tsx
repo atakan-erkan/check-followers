@@ -3,7 +3,7 @@ import { useApp } from '../context/AppContext';
 import React from 'react'
 
 function Navbar() {
-    const { theme, language, toggleTheme, setLanguage, translations } = useApp();
+    const { theme, language, toggleTheme, translations } = useApp();
 
     return (
         <nav className={`py-4 shadow-md ${theme === 'dark' ? 'bg-gray-800 text-yellow-400' : 'bg-black text-yellow-400'

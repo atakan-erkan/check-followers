@@ -54,6 +54,7 @@ export default function Home() {
       setNotFollowingBack(data.notFollowingBack || []);
       setCurrentPage(1);
     } catch (error) {
+      console.error("Bir hata oluştu:", error);
       setModalMessage("Bir hata oluştu. Lütfen tekrar deneyin.");
       setShowModal(true);
     } finally {
