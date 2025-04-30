@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { useApp } from '../context/AppContext';
+import Head from 'next/head';
 
 const HowItWork = () => {
     const { theme } = useApp();
@@ -95,41 +96,57 @@ const HowItWork = () => {
     groupedSteps.push([steps[steps.length - 1]]);
 
     return (
-        <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-yellow-50'}`}>
-            <div className="max-w-7xl mx-auto px-4 py-12">
-                <h1 className={`text-4xl font-bold text-center mb-12 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
-                    Nasıl Çalışır?
-                </h1>
+        <>
+            <Head>
+                <title>Check Followers - Nasıl Çalışır?</title>
+                <meta name="description" content="Instagram takipçi kontrolü nasıl yapılır? Adım adım kullanım kılavuzu ve detaylı açıklamalar." />
+                <meta name="keywords" content="instagram takipçi kontrol nasıl yapılır, instagram unfollow nasıl kontrol edilir, instagram takipçi takip nasıl yapılır" />
+                <meta property="og:title" content="Check Followers - Nasıl Çalışır?" />
+                <meta property="og:description" content="Instagram takipçi kontrolü nasıl yapılır? Adım adım kullanım kılavuzu ve detaylı açıklamalar." />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content="https://check-followers.vercel.app/how-it-work" />
+                <meta property="og:image" content="/images/og-image.png" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="Check Followers - Nasıl Çalışır?" />
+                <meta name="twitter:description" content="Instagram takipçi kontrolü nasıl yapılır? Adım adım kullanım kılavuzu ve detaylı açıklamalar." />
+                <meta name="twitter:image" content="/images/og-image.png" />
+            </Head>
+            <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-yellow-50'}`}>
+                <div className="max-w-7xl mx-auto px-4 py-12">
+                    <h1 className={`text-4xl font-bold text-center mb-12 ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+                        Nasıl Çalışır?
+                    </h1>
 
-                <div className="space-y-8">
-                    {groupedSteps.map((group, groupIndex) => (
-                        <div key={groupIndex} className={`grid ${group.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-6`}>
-                            {group.map((step) => (
-                                <div key={step.id} className={`flex flex-col p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
-                                    <div className="flex items-center gap-4 mb-4">
-                                        <div className={`flex items-center justify-center w-10 h-10 rounded-full ${theme === 'dark' ? 'bg-yellow-500' : 'bg-yellow-500'} text-black text-lg font-bold`}>
-                                            {step.id}
+                    <div className="space-y-8">
+                        {groupedSteps.map((group, groupIndex) => (
+                            <div key={groupIndex} className={`grid ${group.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-6`}>
+                                {group.map((step) => (
+                                    <div key={step.id} className={`flex flex-col p-4 rounded-xl ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <div className={`flex items-center justify-center w-10 h-10 rounded-full ${theme === 'dark' ? 'bg-yellow-500' : 'bg-yellow-500'} text-black text-lg font-bold`}>
+                                                {step.id}
+                                            </div>
+                                            <h2 className={`text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>{step.title}</h2>
                                         </div>
-                                        <h2 className={`text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>{step.title}</h2>
-                                    </div>
-                                    <div className="flex flex-col md:flex-row gap-4">
-                                        <div className="relative h-64 w-full md:w-1/2">
-                                            <Image
-                                                src={step.image}
-                                                alt={step.title}
-                                                fill
-                                                className="object-contain rounded-lg"
-                                            />
+                                        <div className="flex flex-col md:flex-row gap-4">
+                                            <div className="relative h-64 w-full md:w-1/2">
+                                                <Image
+                                                    src={step.image}
+                                                    alt={step.title}
+                                                    fill
+                                                    className="object-contain rounded-lg"
+                                                />
+                                            </div>
+                                            <p className={`text-base md:w-1/2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{step.description}</p>
                                         </div>
-                                        <p className={`text-base md:w-1/2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{step.description}</p>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
-                    ))}
+                                ))}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 
