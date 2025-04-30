@@ -10,6 +10,7 @@ export default function Document() {
         <link rel="icon" type="image/png" sizes="192x192" href="/images/android-chrome-192x192.png" />
         <link rel="icon" type="image/png" sizes="512x512" href="/images/android-chrome-512x512.png" />
         <link rel="manifest" href="/images/site.webmanifest" />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1161163852389450" crossOrigin="anonymous"></script>
       </Head>
       <body className="antialiased">
         <Main />
