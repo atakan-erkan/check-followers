@@ -29,6 +29,10 @@ const translations = {
         tr: 'Sizi Takip Etmeyenler',
         en: 'Not Following Back'
     },
+    notFollowing: {
+        tr: 'Senin Takip Etmediklerin',
+        en: 'You Don\'t Follow'
+    },
     search: {
         tr: 'Kullanıcı adı ara...',
         en: 'Search username...'

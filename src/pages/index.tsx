@@ -7,6 +7,7 @@ export default function Home() {
   const { theme, language, translations } = useApp();
   const [zipFile, setZipFile] = useState<File | null>(null);
   const [notFollowingBack, setNotFollowingBack] = useState<string[]>([]);
+  const [notFollowing, setNotFollowing] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<"alphabetical" | "recent">("alphabetical");
@@ -14,14 +15,16 @@ export default function Home() {
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [showNotFollowingBack, setShowNotFollowingBack] = useState(true);
+  const [showNotFollowing, setShowNotFollowing] = useState(false);
   const itemsPerPage = 12;
 
   // Filtrelenmiş ve sıralanmış sonuçlar
-  const filteredResults = notFollowingBack
+  const filteredResults = (showNotFollowingBack ? notFollowingBack : notFollowing)
     .filter(username => username.toLowerCase().includes(searchTerm.toLowerCase()))
     .sort((a, b) => {
       if (sortBy === "alphabetical") return a.localeCompare(b);
-      return 0; // recent için şimdilik değişiklik yok
+      return 0;
     });
 
   // Sayfalama için hesaplamalar
@@ -50,6 +53,7 @@ export default function Home() {
 
       const data = await res.json();
       setNotFollowingBack(data.notFollowingBack || []);
+      setNotFollowing(data.notFollowing || []);
       setCurrentPage(1);
     } catch (error) {
       console.error("Bir hata oluştu:", error);
@@ -99,7 +103,7 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                   d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
-              <p className="text-sm">
+              <p className="text-sm px-3">
                 {zipFile ? zipFile.name : "Instagram'dan indirdiğiniz zip dosyasını seçin veya sürükleyin"}
               </p>
               <input
@@ -132,13 +136,44 @@ export default function Home() {
         </div>
 
         {notFollowingBack.length > 0 && (
-          <div className={`mt-8 p-6 rounded-xl shadow-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-            }`}>
+          <div className={`mt-8 p-6 rounded-xl shadow-lg ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
             <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-              <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-800'
-                }`}>
-                {translations.notFollowingBack[language]} ({notFollowingBack.length} {translations.people[language]})
-              </h3>
+              <div className="flex gap-4">
+                <button
+                  onClick={() => {
+                    setShowNotFollowingBack(true);
+                    setShowNotFollowing(false);
+                    setCurrentPage(1);
+                  }}
+                  className={`px-4 py-2 rounded-md font-semibold cursor-pointer transition ${showNotFollowingBack
+                    ? theme === 'dark'
+                      ? 'bg-yellow-500 text-black'
+                      : 'bg-yellow-500 text-black'
+                    : theme === 'dark'
+                      ? 'bg-gray-700 text-white'
+                      : 'bg-gray-200 text-gray-800'
+                    }`}
+                >
+                  {translations.notFollowingBack[language]} ({notFollowingBack.length})
+                </button>
+                <button
+                  onClick={() => {
+                    setShowNotFollowingBack(false);
+                    setShowNotFollowing(true);
+                    setCurrentPage(1);
+                  }}
+                  className={`px-4 py-2 rounded-md font-semibold cursor-pointer transition ${showNotFollowing
+                    ? theme === 'dark'
+                      ? 'bg-yellow-500 text-black'
+                      : 'bg-yellow-500 text-black'
+                    : theme === 'dark'
+                      ? 'bg-gray-700 text-white'
+                      : 'bg-gray-200 text-gray-800'
+                    }`}
+                >
+                  {translations.notFollowing[language]} ({notFollowing.length})
+                </button>
+              </div>
               <button
                 onClick={downloadCSV}
                 className={`px-4 py-2 rounded-md font-semibold transition ${theme === 'dark'
@@ -150,66 +185,68 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Arama ve Sıralama */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <input
-                type="text"
-                placeholder={translations.search[language]}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className={`flex-1 p-2 rounded border ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'
-                  }`}
-              />
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as "alphabetical" | "recent")}
-                className={`p-2 rounded border ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'
-                  }`}
-              >
-                <option value="alphabetical">{translations.sortAlphabetical[language]}</option>
-                <option value="recent">{translations.sortRecent[language]}</option>
-              </select>
-            </div>
+            {(showNotFollowingBack || showNotFollowing) && (
+              <>
+                {/* Arama ve Sıralama */}
+                <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                  <input
+                    type="text"
+                    placeholder={translations.search[language]}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className={`flex-1 p-2 rounded border ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
+                  />
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as "alphabetical" | "recent")}
+                    className={`p-2 rounded cursor-pointer border ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
+                  >
+                    <option value="alphabetical">{translations.sortAlphabetical[language]}</option>
+                    <option value="recent">{translations.sortRecent[language]}</option>
+                  </select>
+                </div>
 
-            {/* Sonuçlar */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
-              {paginatedResults.map(username => (
-                <UserCard
-                  key={username}
-                  username={username}
-                  note={notes[username]}
-                  onSaveNote={handleSaveNote}
-                />
-              ))}
-            </div>
+                {/* Sonuçlar */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
+                  {paginatedResults.map(username => (
+                    <UserCard
+                      key={username}
+                      username={username}
+                      note={notes[username]}
+                      onSaveNote={handleSaveNote}
+                    />
+                  ))}
+                </div>
 
-            {/* Sayfalama */}
-            {totalPages > 1 && (
-              <div className="flex justify-center mt-6 gap-2">
-                <button
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                  className={`px-4 py-2 rounded-md ${theme === 'dark'
-                    ? 'bg-yellow-500 text-black disabled:opacity-50'
-                    : 'bg-yellow-500 text-black disabled:opacity-50'
-                    }`}
-                >
-                  {translations.previous[language]}
-                </button>
-                <span className="px-4 py-2">
-                  {translations.page[language]} {currentPage} / {totalPages}
-                </span>
-                <button
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                  disabled={currentPage === totalPages}
-                  className={`px-4 py-2 rounded-md ${theme === 'dark'
-                    ? 'bg-yellow-500 text-black disabled:opacity-50'
-                    : 'bg-yellow-500 text-black disabled:opacity-50'
-                    }`}
-                >
-                  {translations.next[language]}
-                </button>
-              </div>
+                {/* Sayfalama */}
+                {totalPages > 1 && (
+                  <div className="flex justify-center mt-6 gap-2">
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className={`px-4 py-2 cursor-pointer rounded-md ${theme === 'dark'
+                        ? 'bg-yellow-500 text-black disabled:opacity-50'
+                        : 'bg-yellow-500 text-black disabled:opacity-50'
+                        }`}
+                    >
+                      {translations.previous[language]}
+                    </button>
+                    <span className="px-4 py-2">
+                      {translations.page[language]} {currentPage} / {totalPages}
+                    </span>
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                      className={`px-4 py-2 cursor-pointer rounded-md ${theme === 'dark'
+                        ? 'bg-yellow-500 text-black disabled:opacity-50'
+                        : 'bg-yellow-500 text-black disabled:opacity-50'
+                        }`}
+                    >
+                      {translations.next[language]}
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}
@@ -224,7 +261,7 @@ export default function Home() {
         <div className="mt-4 flex justify-end">
           <button
             onClick={() => setShowModal(false)}
-            className={`px-4 py-2 rounded-md font-semibold ${theme === 'dark'
+            className={`px-4 py-2 cursor-pointer rounded-md font-semibold ${theme === 'dark'
               ? 'bg-yellow-500 text-black hover:bg-yellow-600'
               : 'bg-yellow-500 text-black hover:bg-yellow-600'
               }`}

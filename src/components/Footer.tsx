@@ -3,7 +3,7 @@ import { useApp } from '../context/AppContext';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import ReactConfetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
-
+import Logo from '../pages/icons/Logo';
 const Footer = () => {
     const { theme, language, translations } = useApp();
     const [feedback, setFeedback] = useState('');
@@ -30,7 +30,7 @@ const Footer = () => {
     };
 
     return (
-        <footer className={`py-8 ${theme === 'dark' ? 'bg-gray-800 text-yellow-400' : 'bg-black text-yellow-400'}`}>
+        <footer className={`py-8 ${theme === 'dark' ? 'bg-gray-800 text-[#FFD700]' : 'bg-black text-[#FFD700]'}`}>
             {showConfetti && (
                 <div className="fixed inset-0 z-50 pointer-events-none">
                     <ReactConfetti
@@ -53,7 +53,7 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Logo ve Açıklama */}
                     <div className="flex flex-col items-center md:items-start">
-                        <div className="text-2xl font-bold mb-4">Check Followers</div>
+                        <Logo className="w-50 h-auto" />
                         <p className="text-sm text-center md:text-left">
                             Instagram takipçi analiz aracı ile hesaplarınızı daha iyi yönetin.
                         </p>
@@ -79,7 +79,7 @@ const Footer = () => {
                             />
                             <button
                                 type="submit"
-                                className="w-full bg-yellow-400 text-black py-2 px-4 rounded hover:bg-yellow-300 transition-colors"
+                                className="w-full bg-[#FFD700] text-black py-2 px-4 rounded hover:bg-[#FFD700] transition-colors"
                             >
                                 Gönder
                             </button>
@@ -94,7 +94,7 @@ const Footer = () => {
                                 href="https://www.linkedin.com/in/atakan-erkan/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="hover:text-yellow-300 transition-colors text-2xl"
+                                className="hover:text-[#FFD700] transition-colors text-2xl"
                                 title="LinkedIn"
                             >
                                 <FaLinkedin />
@@ -103,7 +103,7 @@ const Footer = () => {
                                 href="https://github.com/atakan-erkan"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="hover:text-yellow-300 transition-colors text-2xl"
+                                className="hover:text-[#FFD700] transition-colors text-2xl"
                                 title="GitHub"
                             >
                                 <FaGithub />
@@ -121,7 +121,7 @@ const Footer = () => {
                             href="https://www.linkedin.com/in/atakan-erkan/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:text-yellow-300 transition-colors font-semibold"
+                            className="hover:text-[#FFD700] transition-colors font-semibold"
                         >
                             Atakan Erkan
                         </a>

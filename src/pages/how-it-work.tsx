@@ -9,13 +9,17 @@ const HowItWork = () => {
         {
             id: 1,
             title: "Instagram Hesabınıza Giriş Yapın",
-            description: "Instagram hesabınıza giriş yaparak başlayın. Güvenli bir şekilde hesabınıza erişim sağlayacağız.",
+            description: "Mobil uygulamadan veya web sitesinden Instagram hesabınıza giriş yaparak başlayın.",
             image: "/images/step-one.png"
         },
         {
             id: 2,
             title: "Hareketlerinizi Görüntüleyin",
-            description: "Ayarlar bölümünden hareketlerin bölümüne girin.",
+            description: (
+                <>
+                    Ayarlar bölümünden <strong>&apos;Hareketlerin&apos;</strong> bölümüne girin.
+                </>
+            ),
             image: "/images/step-two.png"
         },
         {
@@ -45,19 +49,27 @@ const HowItWork = () => {
         {
             id: 7,
             title: "Bilgilerini İndirin",
-            description: "Bağlantılar bölümünden Takipçiler ve takip edilenleri seçin.",
+            description: (
+                <>
+                    Bağlantılar bölümünden <strong>&apos;Takipçiler ve Takip Edilenler&apos;</strong> seçin.
+                </>
+            ),
             image: "/images/step-seven.png"
         },
         {
             id: 8,
             title: "Cihaza Aktarın",
-            description: "Cihaza aktarın.",
+            description: "Cihaza indirmek için indirme bölümüne tıklayın.",
             image: "/images/step-eight.png"
         },
         {
             id: 9,
             title: "Cihaza Aktarın",
-            description: "Cihaza aktarmadan önce istediğiniz tarih aralığını seçebilirsiniz.",
+            description: (
+                <>
+                    Cihaza aktarmadan önce tarih aralığını <strong>&apos;Tüm Zamanlar&apos;</strong> olarak ayarlayın.
+                </>
+            ),
             image: "/images/step-nine.png"
         },
         {

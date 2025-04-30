@@ -59,9 +59,13 @@ export default async function handler(
             const following = extractUsernamesFromHTML(followingHTML);
             const followers = extractUsernamesFromHTML(followersHTML);
 
+            // Sizi takip etmeyenler (sizin takip ettiğiniz ama sizi takip etmeyenler)
             const notFollowingBack = following.filter(username => !followers.includes(username));
 
-            res.status(200).json({ notFollowingBack });
+            // Sizin takip etmediğiniz kişiler (sizi takip eden ama sizin takip etmediğiniz kişiler)
+            const notFollowing = followers.filter(username => !following.includes(username));
+
+            res.status(200).json({ notFollowingBack, notFollowing });
         } catch (e) {
             const error = e as Error;
             res.status(500).json({ error: "İşleme hatası: " + error.message });
